@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-hapi')
+const { gql } = require('apollo-server-hapi');
 const typeDefs = gql`
   type Mock {
     id: String
@@ -10,4 +10,4 @@ const typeDefs = gql`
   }
 `;
 
-module.exports = typeDefs
+module.exports = typeDefs;
