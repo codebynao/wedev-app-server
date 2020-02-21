@@ -3,24 +3,56 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const config = require('./../config/default');
+
 const userSchema = new Schema(
   {
     lastName: {
       type: String,
+      trim: true,
       required: true
     },
     firstName: {
       type: String,
+      trim: true,
       required: true
     },
     company: {
       type: String,
+      trim: true,
       default: undefined
+    },
+    siret: {
+      type: String,
+      minLength: 14,
+      maxLength: 14
     },
     email: {
       type: String,
+      trim: true,
       required: true,
       unique: true
+    },
+    password: {
+      type: String,
+      trim: true,
+      required: true,
+      minLength: 8
+    },
+    phone: {
+      type: String,
+      trim: true,
+      default: undefined
+    },
+    companyStatus: {
+      type: String,
+      enum: Object.values(config.COMPANY_STATUS),
+      default: config.COMPANY_STATUS.OTHER
+    },
+    professionalStatus: {
+      type: String,
+      enum: Object.values(config.PROFESSIONAL_STATUS),
+      default: config.PROFESSIONAL_STATUS.OTHER
     }
   },
   {
