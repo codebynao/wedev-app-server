@@ -1,9 +1,7 @@
-
 const resolvers = {
   Query: {
-    mock: async (root, args) => args,
+    mock: async (root, args) => args
+  }
+};
 
-  },
-}
-
-module.exports = resolvers
+module.exports = resolvers;
