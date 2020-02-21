@@ -1,0 +1,25 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Server side",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "backend",
+    "server"
+  ],
+  "author": "Naomi PAULMIN",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/hapi": "^19.1.1",
+    "@hapi/inert": "^6.0.1",
+    "apollo-server-hapi": "^2.10.1",
+    "graphql": "^14.6.0",
+    "mongoose": "^5.9.1"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  }
+}
