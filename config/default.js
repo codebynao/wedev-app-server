@@ -25,7 +25,10 @@ module.exports = {
     SECURITY: 'security',
     TELECOM: 'telecom_network'
   },
+  LENGTH_SIRET: 14,
+  MINIMUM_LENGTH_PASSWORD: 8,
   REGEX: {
-    EMAIL: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gim
+    EMAIL: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gim,
+    NUMBERS_ONLY: /^[0-9]+$/
   }
 };
