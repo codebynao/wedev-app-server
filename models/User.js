@@ -24,8 +24,8 @@ const userSchema = new Schema(
     },
     siret: {
       type: String,
-      minLength: 14,
-      maxLength: 14
+      minLength: config.LENGTH_SIRET,
+      maxLength: config.LENGTH_SIRET
     },
     email: {
       type: String,
@@ -37,7 +37,7 @@ const userSchema = new Schema(
       type: String,
       trim: true,
       required: true,
-      minLength: 8
+      minLength: config.MINIMUM_LENGTH_PASSWORD
     },
     phone: {
       type: String,

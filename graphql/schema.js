@@ -1,12 +1,33 @@
 const { gql } = require('apollo-server-hapi');
 const typeDefs = gql`
-  type Mock {
-    id: String
-    name: String
-    artist: String
+  type User {
+    _id: String
+    lastName: String
+    firstName: String
+    company: String
+    siret: String
+    email: String
+    phone: String
+    companyStatus: String
+    professionalStatus: String
+    token: String
   }
   type Query {
-    mock(id: ID!): Mock
+    getUser(_id: ID!): User
+  }
+  type Mutation {
+    userLogin(email: String!, password: String!): User
+    userRegister(
+      lastName: String!
+      firstName: String!
+      company: String
+      siret: String
+      email: String!
+      password: String!
+      phone: String
+      companyStatus: String
+      professionalStatus: String
+    ): User
   }
 `;
 

@@ -1,6 +1,10 @@
+const authController = require('../controllers/auth');
+const userController = require('../controllers/user');
+
 const resolvers = {
-  Query: {
-    mock: async (root, args) => args
+  Mutation: {
+    userLogin: async (root, args) => authController.login(args),
+    userRegister: async (root, args) => userController.createUser(args)
   }
 };
 
