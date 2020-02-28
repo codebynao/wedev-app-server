@@ -2,6 +2,7 @@
 
 require('dotenv').config();
 
+// console.info(process.env);
 const hapi = require('@hapi/hapi');
 const mongoose = require('mongoose');
 

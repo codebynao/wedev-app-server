@@ -1,0 +1,50 @@
+name: Staging workflow
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - name: Setup gcloud CLI
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '275.0.0'
+          service_account_email: ${{ secrets.STAGING_GAE_CLIENT_EMAIL }}
+          service_account_key: ${{ secrets.STAGING_GAE_SECRET_KEY }}
+          export_default_credentials: true
+
+      - name: gcloud Configuration
+        run: |
+          gcloud config set project ${{ secrets.STAGING_GAE_PROJECT_ID }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Get current branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: curr_branch
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Add secrets to app.staging.yaml
+        run: |
+          node AddEnvVariablesForDeploy.js app.staging.yaml ${{ secrets.STAGING_GAE_SECRETS }}
+
+      - name: Run lint
+        run: npm run lint:fix
+
+      - name: Deploy to App Engine
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.STAGING_GAE_SECRET_KEY }}
+        run: gcloud app deploy app.staging.yaml --project ${{ secrets.STAGING_GAE_PROJECT_ID }}
