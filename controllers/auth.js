@@ -18,7 +18,9 @@ class Auth {
       const user = await UserModel.findOne({ email });
 
       if (!user || !bcrypt.compareSync(decryptedPwd, user.password)) {
-        throw new AuthenticationError('wrong login');
+        throw new AuthenticationError(
+          'Adresse mail ou mot de passe incorrect(e)'
+        );
       }
 
       const token = jwt.sign({ email }, process.env.JWT_KEY, {
