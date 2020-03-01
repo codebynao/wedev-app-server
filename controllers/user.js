@@ -16,7 +16,7 @@ class User {
       // Error if user email already exists
       if (userFound) {
         throw new ApolloError(
-          'This email is already registered to another user',
+          'Cette adresse mail est déjà utilisée par un autre utilisateur',
           500,
           { errorLabel: 'user_register_duplicated_email' }
         );
@@ -24,7 +24,7 @@ class User {
 
       // Error if user email doesn't have a correct format
       if (!config.REGEX.EMAIL.test(args.email)) {
-        throw new ApolloError('Wrong email format', 500, {
+        throw new ApolloError("Mauvais format d'adresse mail", 500, {
           errorLabel: 'user_register_incorrect_email_format'
         });
       }
@@ -38,7 +38,7 @@ class User {
       // Error if password is too short
       if (decryptedPwd.length < config.MINIMUM_LENGTH_PASSWORD) {
         throw new ApolloError(
-          `Password must have at least ${config.MINIMUM_LENGTH_PASSWORD} characters`,
+          `Le mot de passe doit contenir au minimum ${config.MINIMUM_LENGTH_PASSWORD} caractères`,
           500,
           { errorLabel: 'user_register_password_length' }
         );
@@ -55,7 +55,7 @@ class User {
         args.siret.length !== config.LENGTH_SIRET &&
         !config.REGEX.NUMBERS_ONLY.test(args.siret)
       ) {
-        throw new ApolloError(`Wrong siret format`, 500, {
+        throw new ApolloError(`Mauvais format de numéro de SIRET`, 500, {
           errorLabel: 'user_register_incorrect_siret_format'
         });
       }
@@ -66,7 +66,7 @@ class User {
         args.companyStatus &&
         !companyStatusConfig.includes(args.companyStatus)
       ) {
-        throw new ApolloError(`Unknown company status`, 500, {
+        throw new ApolloError(`Statut de société inconnu`, 500, {
           errorLabel: 'user_register_unknown_company_status'
         });
       }
@@ -79,7 +79,7 @@ class User {
         args.professionalStatus &&
         !professionalStatusConfig.includes(args.professionalStatus)
       ) {
-        throw new ApolloError(`Unknown professional status`, 500, {
+        throw new ApolloError(`Statut professionnel inconnu`, 500, {
           errorLabel: 'user_register_unknown_professional_status'
         });
       }
