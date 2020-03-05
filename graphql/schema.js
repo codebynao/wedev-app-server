@@ -1,8 +1,8 @@
 const { gql } = require('apollo-server-hapi');
 
 const typeDefs = gql`
-  type User {
-    _id: String
+  type AuthUser {
+    _id: ID
     lastName: String
     firstName: String
     company: String
@@ -13,11 +13,24 @@ const typeDefs = gql`
     professionalStatus: String
     token: String
   }
+  type User {
+    _id: ID
+    lastName: String
+    firstName: String
+    company: String
+    siret: String
+    email: String
+    phone: String
+    companyStatus: String
+    professionalStatus: String
+    isDeactivated: Boolean
+  }
   type Query {
-    getUser(_id: ID!): User
+    user(_id: ID!): User
   }
   type Mutation {
-    userLogin(email: String!, password: String!): User
+    userDeactivation(_id: ID!): Boolean
+    userLogin(email: String!, password: String!): AuthUser
     userRegister(
       lastName: String!
       firstName: String!
@@ -25,6 +38,17 @@ const typeDefs = gql`
       siret: String
       email: String!
       password: String!
+      phone: String
+      companyStatus: String
+      professionalStatus: String
+    ): AuthUser
+    userUpdate(
+      _id: ID!
+      lastName: String!
+      firstName: String!
+      company: String
+      siret: String
+      email: String!
       phone: String
       companyStatus: String
       professionalStatus: String
