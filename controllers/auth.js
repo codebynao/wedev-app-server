@@ -17,7 +17,11 @@ class Auth {
 
       const user = await UserModel.findOne({ email });
 
-      if (!user || !bcrypt.compareSync(decryptedPwd, user.password)) {
+      if (
+        !user ||
+        !bcrypt.compareSync(decryptedPwd, user.password) ||
+        user.isDeactivated
+      ) {
         throw new AuthenticationError(
           'Adresse mail ou mot de passe incorrect(e)'
         );

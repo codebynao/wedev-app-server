@@ -53,6 +53,10 @@ const userSchema = new Schema(
       type: String,
       enum: Object.values(config.PROFESSIONAL_STATUS),
       default: config.PROFESSIONAL_STATUS.OTHER
+    },
+    isDeactivated: {
+      type: Boolean,
+      default: false
     }
   },
   {
