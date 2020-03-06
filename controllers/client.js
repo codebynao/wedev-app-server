@@ -31,15 +31,14 @@ class Client {
     }
   }
 
-  async deactivateClient(args) {
+  async deleteClient(args) {
     try {
-      return await ClientModel.findByIdAndUpdate(
-        args._id,
-        { $set: { isDeleted: true } },
-        { new: true }
-      );
+      await ClientModel.findByIdAndUpdate(args._id, {
+        $set: { isDeleted: true }
+      });
+      return true;
     } catch (error) {
-      console.error('Error deactivateClient', error);
+      console.error('Error deleteClient', error);
       throw new Error(error.message || error);
     }
   }

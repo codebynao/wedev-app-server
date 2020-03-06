@@ -7,7 +7,7 @@
     "prettier/prettier": "error"
   },
   "parserOptions": {
-    "ecmaVersion": 2017
+    "ecmaVersion": 9
   },
 
   "env": {

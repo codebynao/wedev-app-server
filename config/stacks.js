@@ -1,0 +1,60 @@
+module.exports = {
+  backend: [
+    'Node.js',
+    'Django',
+    'PHP',
+    'Python',
+    'Java',
+    'Elasticsearch',
+    'Symfony',
+    'Redis',
+    'Ruby On Rails',
+    'Go',
+    'C#',
+    'C++',
+    'Ruby',
+    'WordPress',
+    'Laravel',
+    'C',
+    'Kotlin',
+    'Firebase'
+  ],
+  database: [
+    'PostgreSQL',
+    'MySQL',
+    'MongoDB',
+    'GraphQL',
+    'Microsoft SQL Server'
+  ],
+  devops: [
+    'Docker',
+    'AWS',
+    'Gitlab',
+    'Ansible',
+    'Kubernetes',
+    'Git',
+    'Github',
+    'Google Cloud Platform',
+    'Terraform',
+    'Azure',
+    'Bitbucket'
+  ],
+  frontend: [
+    'React JS',
+    'Javascript',
+    'HTML5',
+    'SASS',
+    'Vue.js',
+    'CSS3',
+    'AngularJS',
+    'Redux.js',
+    'Angular',
+    'TypeScript',
+    'jQuery',
+    'Bootstrap',
+    'Webpack',
+    'Next.js',
+    'Nuxt.js',
+    'CoffeeScript'
+  ]
+};
