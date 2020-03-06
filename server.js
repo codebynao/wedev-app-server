@@ -2,7 +2,6 @@
 
 require('dotenv').config();
 
-// console.info(process.env);
 const hapi = require('@hapi/hapi');
 const mongoose = require('mongoose');
 
@@ -11,8 +10,8 @@ const typeDefs = require('./graphql/schema');
 const resolvers = require('./graphql/resolvers');
 
 const app = hapi.Server({
-  port: process.env.PORT,
-  host: process.env.HOST,
+  port: process.env.PORT || 'localhost',
+  host: process.env.HOST || 3000,
   routes: {
     cors: true
   }

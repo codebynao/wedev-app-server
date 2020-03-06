@@ -7,6 +7,8 @@ module.exports = {
     SARL: 'SARL',
     OTHER: 'other'
   },
+  LENGTH_SIRET: 14,
+  MINIMUM_LENGTH_PASSWORD: 8,
   PROFESSIONAL_STATUS: {
     DATA_ANALYST: 'data_analyst',
     DATA_ENGINEERING: 'data_engineering',
@@ -25,8 +27,11 @@ module.exports = {
     SECURITY: 'security',
     TELECOM: 'telecom_network'
   },
-  LENGTH_SIRET: 14,
-  MINIMUM_LENGTH_PASSWORD: 8,
+  PROGRESS_STATUS: {
+    NOT_STARTED: 'not_started',
+    WIP: 'wip',
+    DONE: 'done'
+  },
   REGEX: {
     EMAIL: /^([-!#$%&'*+/=?^_`{}|~0-9a-zA-Z]+(\.[-!#$%&'*+/=?^_`{}|~0-9a-zA-Z]+)*|^\"([\001-\010\013\014\016-\037!#-\[\]-\177]|\\[\001-011\013\014\016-\177])*\")@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}\.?$/,
     NUMBERS_ONLY: /^[0-9]+$/
