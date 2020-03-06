@@ -64,8 +64,10 @@ class User {
    */
   async createUser(args) {
     try {
+      const userArgs = args.user;
+
       // Check if user with same email already exists
-      const userFound = await UserModel.findOne({ email: args.email });
+      const userFound = await UserModel.findOne({ email: userArgs.email });
 
       // Error if user email already exists
       if (userFound) {
@@ -77,7 +79,7 @@ class User {
       }
 
       // Check if a property value is incorrect
-      const error = this.checkUserProperties(args);
+      const error = this.checkUserProperties(userArgs);
 
       if (error) {
         throw error;
@@ -85,7 +87,7 @@ class User {
 
       // Decrypt password
       const decryptedPwd = crypto.AES.decrypt(
-        args.password,
+        userArgs.password,
         process.env.CRYPT_KEY
       ).toString(crypto.enc.Utf8);
 
@@ -98,13 +100,22 @@ class User {
         );
       }
 
+      // Hash password that will be saved in DB
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPwd = bcrypt.hashSync(decryptedPwd, salt);
+      userArgs.password = hashedPwd;
+
       // Create the user
-      const user = await UserModel.create(args);
+      const user = await UserModel.create(userArgs);
 
       // Generate the user JWT token
-      const token = jwt.sign({ email: user.email }, process.env.JWT_KEY, {
-        algorithm: 'HS256'
-      });
+      const token = jwt.sign(
+        { _id: user._id, email: user.email },
+        process.env.JWT_KEY,
+        {
+          algorithm: 'HS256'
+        }
+      );
       user.token = token;
 
       return user;
@@ -130,7 +141,7 @@ class User {
     try {
       return await UserModel.findById(args._id);
     } catch (error) {
-      console.error('Error createUser =>', error);
+      console.error('Error getUser =>', error);
       throw new Error(error.message || error);
     }
   }
@@ -141,24 +152,23 @@ class User {
    * @returns {Object} updated user
    */
   async updateUser(args) {
-    if (!args._id) {
+    const user = args.user;
+    if (!user._id) {
       throw new UserInputError('Identifiant manquant', {
         invalidArgs: ['_id']
       });
     }
 
     // Check if a property value is incorrect
-    const error = this.checkUserProperties(args);
-    console.info('error', error);
+    const error = this.checkUserProperties(user);
     if (error) {
       throw error;
     }
 
     try {
-      console.info('args', args);
       return await UserModel.findByIdAndUpdate(
-        args._id,
-        { $set: args },
+        user._id,
+        { $set: user },
         { new: true }
       );
     } catch (error) {

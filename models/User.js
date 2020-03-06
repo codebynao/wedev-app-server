@@ -57,7 +57,19 @@ const userSchema = new Schema(
     isDeactivated: {
       type: Boolean,
       default: false
-    }
+    },
+    clients: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Client'
+      }
+    ],
+    projects: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Project'
+      }
+    ]
   },
   {
     timestamps: true, // Use Mongoose createdAt & updatedAt,
