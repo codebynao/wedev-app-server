@@ -10,8 +10,8 @@ const typeDefs = require('./graphql/schema');
 const resolvers = require('./graphql/resolvers');
 
 const app = hapi.Server({
-  port: process.env.PORT || 'localhost',
-  host: process.env.HOST || 3000,
+  port: process.env.PORT || 3000,
+  host: process.env.HOST || 'localhost',
   routes: {
     cors: true
   }
