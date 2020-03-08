@@ -27,7 +27,7 @@ class Auth {
         );
       }
 
-      const token = jwt.sign({ email }, process.env.JWT_KEY, {
+      const token = jwt.sign({ email, _id: user._id }, process.env.JWT_KEY, {
         algorithm: 'HS256'
       });
 
