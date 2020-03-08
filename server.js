@@ -8,6 +8,8 @@ const mongoose = require('mongoose');
 const { ApolloServer } = require('apollo-server-hapi');
 const typeDefs = require('./graphql/schema');
 const resolvers = require('./graphql/resolvers');
+const { validate } = require('./lib/auth');
+const { AuthenticationError } = require('apollo-server-hapi');
 
 const app = hapi.Server({
   port: process.env.PORT || 3000,
@@ -16,7 +18,25 @@ const app = hapi.Server({
     cors: true
   }
 });
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: async req => {
+    const request = req.request;
+    // get the user token from the headers
+    const token = (request && request.headers.authorization) || null;
+
+    // try to retrieve a user with the token
+    const user = await validate(token);
+
+    // add the user to the context
+    return { user };
+  },
+  route: {
+    auth: { mode: 'try' }
+  }
+});
+
 const init = async () => {
   await server.applyMiddleware({
     app
