@@ -3,6 +3,7 @@
 const ClientModel = require('./../models/Client');
 const { creationSchema, updateSchema } = require('./../schemas/client');
 const Joi = require('@hapi/joi');
+const { AuthenticationError } = require('apollo-server-hapi');
 
 class Client {
   async createClient(args, context) {

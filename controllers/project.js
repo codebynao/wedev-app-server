@@ -3,7 +3,8 @@
 const ProjectModel = require('./../models/Project');
 const { creationSchema, updateSchema } = require('./../schemas/project');
 const Joi = require('@hapi/joi');
-const stacks = require('./../config/stacks');
+// const stacks = require('./../config/stacks');
+const { AuthenticationError } = require('apollo-server-hapi');
 
 class Project {
   async createProject(args, context) {

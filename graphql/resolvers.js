@@ -2,7 +2,6 @@ const authController = require('../controllers/auth');
 const userController = require('../controllers/user');
 const clientController = require('../controllers/client');
 const projectController = require('../controllers/project');
-const { AuthenticationError } = require('apollo-server-hapi');
 
 const resolvers = {
   Query: {
