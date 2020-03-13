@@ -11,6 +11,8 @@ const resolvers = {
       clientController.getClients(context),
     project: async (root, args, context) =>
       projectController.getProject(args, context),
+    projects: async (root, args, context) =>
+      projectController.getProjects(context),
     user: async (root, args, context) => userController.getUser(args, context)
   },
   Mutation: {
