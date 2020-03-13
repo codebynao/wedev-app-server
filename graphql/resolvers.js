@@ -6,54 +6,33 @@ const { AuthenticationError } = require('apollo-server-hapi');
 
 const resolvers = {
   Query: {
-    client: async (root, args, context) => {
-      if (!context.user) throw new AuthenticationError('Accès non autorisé');
-      return clientController.getClient(args, context.user);
-    },
-    project: async (root, args, context) => {
-      if (!context.user) throw new AuthenticationError('Accès non autorisé');
-      return projectController.getProject(args);
-    },
-    user: async (root, args, context) => {
-      if (!context.user) throw new AuthenticationError('Accès non autorisé');
-      return userController.getUser(args);
-    }
+    client: async (root, args, context) =>
+      clientController.getClient(args, context),
+    clients: async (root, args, context) =>
+      clientController.getClients(context),
+    project: async (root, args, context) =>
+      projectController.getProject(args, context),
+    user: async (root, args, context) => userController.getUser(args, context)
   },
   Mutation: {
     userLogin: async (root, args) => authController.login(args),
     userRegister: async (root, args) => userController.createUser(args),
-    userDeactivation: async (root, args, context) => {
-      if (!context.user) throw new AuthenticationError('Accès non autorisé');
-      userController.deactivateUser(args);
-    },
-    userUpdate: async (root, args, context) => {
-      if (!context.user) throw new AuthenticationError('Accès non autorisé');
-      userController.updateUser(args);
-    },
-    clientCreation: async (root, args, context) => {
-      if (!context.user) throw new AuthenticationError('Accès non autorisé');
-      clientController.createClient(args);
-    },
-    clientUpdate: async (root, args, context) => {
-      if (!context.user) throw new AuthenticationError('Accès non autorisé');
-      clientController.updateClient(args);
-    },
-    clientDeletion: async (root, args, context) => {
-      if (!context.user) throw new AuthenticationError('Accès non autorisé');
-      clientController.deleteClient(args);
-    },
-    projectCreation: async (root, args, context) => {
-      if (!context.user) throw new AuthenticationError('Accès non autorisé');
-      projectController.createProject(args);
-    },
-    projectUpdate: async (root, args, context) => {
-      if (!context.user) throw new AuthenticationError('Accès non autorisé');
-      projectController.updateProject(args);
-    },
-    projectDeletion: async (root, args, context) => {
-      if (!context.user) throw new AuthenticationError('Accès non autorisé');
-      projectController.deleteProject(args);
-    }
+    userDeactivation: async (root, args, context) =>
+      userController.deactivateUser(args, context),
+    userUpdate: async (root, args, context) =>
+      userController.updateUser(args, context),
+    clientCreation: async (root, args, context) =>
+      clientController.createClient(args, context),
+    clientUpdate: async (root, args, context) =>
+      clientController.updateClient(args, context),
+    clientDeletion: async (root, args, context) =>
+      clientController.deleteClient(args, context),
+    projectCreation: async (root, args, context) =>
+      projectController.createProject(args, context),
+    projectUpdate: async (root, args, context) =>
+      projectController.updateProject(args, context),
+    projectDeletion: async (root, args, context) =>
+      projectController.deleteProject(args, context)
   }
 };
 
