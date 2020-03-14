@@ -145,6 +145,8 @@ const typeDefs = gql`
     user: String
     delay: String
     repositories: [Repository]
+    tasks: [Task]
+    sprints: [String]
     isDeleted: Boolean
   }
   input ProjectInput {
@@ -161,7 +163,53 @@ const typeDefs = gql`
     user: String!
     delay: String
     repositories: [RepositoryInput]
+    tasks: [String]
+    sprints: [String]
     isDeleted: Boolean
+  }
+
+  # Task
+  type Task {
+    _id: ID
+    title: String
+    description: String
+    status: String
+    startDate: String
+    endDate: String
+    completionTime: String
+    project: String
+    sprint: String
+  }
+  input TaskInput {
+    _id: ID
+    title: String!
+    description: String
+    status: String!
+    startDate: String
+    endDate: String
+    completionTime: String
+    project: String!
+    sprint: String
+  }
+
+  # Sprint
+  type Sprint {
+    _id: ID
+    title: String
+    status: String
+    startDate: String
+    endDate: String
+    project: String
+    tasks: [Task]
+  }
+  input SprintInput {
+    _id: ID
+    title: String!
+    status: String!
+    startDate: String
+    endDate: String
+    project: String!
+    tasks: [String]
   }
 
   # Query
@@ -170,6 +218,10 @@ const typeDefs = gql`
     clients: [Client]
     project(_id: ID!): Project
     projects: [Project]
+    sprint(_id: ID!): Sprint
+    sprints: [Sprint]
+    task(_id: ID!): Task
+    tasks: [Task]
     user(_id: ID!): User
   }
 
@@ -178,13 +230,19 @@ const typeDefs = gql`
     userDeactivation(_id: ID!): Boolean
     userLogin(email: String!, password: String!): AuthUser
     userRegister(user: AuthUserInput!): AuthUser
-    userUpdate(user: UserInput): User
+    userUpdate(user: UserInput!): User
     clientDeletion(_id: ID!): Boolean
     clientCreation(client: ClientInput!): Client
     clientUpdate(client: ClientInput!): Client
     projectDeletion(_id: ID!): Boolean
     projectCreation(project: ProjectInput!): Project
     projectUpdate(project: ProjectInput!): Project
+    sprintCreation(sprint: SprintInput!): Sprint
+    sprintUpdate(sprint: SprintInput!): Sprint
+    sprintDeletion(_id: ID!): Boolean
+    taskCreation(task: TaskInput!): Task
+    taskUpdate(task: TaskInput!): Task
+    taskDeletion(_id: ID!): Boolean
   }
 `;
 

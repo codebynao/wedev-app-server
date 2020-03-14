@@ -3,8 +3,8 @@
 const ProjectModel = require('./../models/Project');
 const { creationSchema, updateSchema } = require('./../schemas/project');
 const Joi = require('@hapi/joi');
-// const stacks = require('./../config/stacks');
 const { AuthenticationError } = require('apollo-server-hapi');
+const auth = require('./../lib/auth');
 
 class Project {
   async createProject(args, context) {
@@ -36,7 +36,7 @@ class Project {
       // Check if logged in user is authorized to perform this action
       if (
         !context.user ||
-        hasProjectPermission(context.user, args.project._id)
+        auth.hasProjectPermission(context.user, args.project._id)
       ) {
         throw new AuthenticationError('Action non autorisée');
       }
@@ -61,7 +61,7 @@ class Project {
   async deleteProject(args) {
     try {
       // Check if logged in user is authorized to perform this action
-      if (!context.user || hasProjectPermission(context.user, args._id)) {
+      if (!context.user || auth.hasProjectPermission(context.user, args._id)) {
         throw new AuthenticationError('Action non autorisée');
       }
       await ProjectModel.findByIdAndUpdate(args._id, {
@@ -74,10 +74,10 @@ class Project {
     }
   }
 
-  async getProject(args) {
+  async getProject(args, context) {
     try {
       // Check if logged in user is authorized to perform this action
-      if (!context.user || hasProjectPermission(context.user, args._id)) {
+      if (!context.user || auth.hasProjectPermission(context.user, args._id)) {
         throw new AuthenticationError('Action non autorisée');
       }
       return await ProjectModel.findById(args._id);
@@ -99,12 +99,6 @@ class Project {
       console.error('Error getProjects', error);
       throw new Error(error.message || error);
     }
-  }
-
-  hasProjectPermission(contextUser, projectId) {
-    return (
-      contextUser.projects && contextUser.projects.find(id => id === projectId)
-    );
   }
 }
 

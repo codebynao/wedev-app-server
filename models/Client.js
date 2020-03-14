@@ -70,7 +70,15 @@ const clientSchema = new Schema(
       },
       default: undefined
     },
-    projects: [],
+    projects: {
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Project'
+        }
+      ],
+      default: []
+    },
     isDeleted: {
       type: Boolean,
       default: false
