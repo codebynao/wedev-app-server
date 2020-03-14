@@ -31,6 +31,7 @@ const stackSchema = {
 
 const basic = {
   title: Joi.string().required(),
+  description: Joi.string().optional(),
   quote: Joi.number().optional(),
   implementationDeadline: Joi.number().default(1),
   startDate: Joi.string().required(),

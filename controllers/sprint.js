@@ -2,6 +2,8 @@
 
 const ProjectModel = require('./../models/Project');
 const SprintModel = require('./../models/Sprint');
+const TaskModel = require('./../models/Task');
+
 const { creationSchema, updateSchema } = require('./../schemas/sprint');
 const Joi = require('@hapi/joi');
 
@@ -48,10 +50,13 @@ class Sprint {
       const oldSprint = await SprintModel.findById(args.sprint._id).lean();
 
       for (const task of oldSprint.tasks) {
-        if (args.sprint.tasks.includes(task)) {
+        const ids = args.sprint.tasks.map(task => task.toString());
+        if (ids.includes(task.toString())) {
           continue;
         }
-        await task.findByIdAndUpdate(task, { $set: { sprint: undefined } });
+        await TaskModel.findByIdAndUpdate(task, {
+          $set: { sprint: undefined }
+        });
       }
 
       return await SprintModel.findByIdAndUpdate(

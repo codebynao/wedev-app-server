@@ -140,6 +140,7 @@ const typeDefs = gql`
   type Project {
     _id: ID
     title: String
+    description: String
     quote: String
     implementationDeadline: String
     startDate: String
@@ -160,6 +161,7 @@ const typeDefs = gql`
   input ProjectInput {
     _id: ID
     title: String!
+    description: String
     quote: String
     implementationDeadline: String
     startDate: String!
