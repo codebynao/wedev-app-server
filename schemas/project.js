@@ -40,7 +40,7 @@ const basic = {
     .required(),
   stacks: Joi.array()
     .items(stackSchema)
-    .required(),
+    .optional(),
   dailyRate: Joi.number().optional(),
   client: Joi.string().optional(),
   user: Joi.string().required(),
