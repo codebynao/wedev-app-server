@@ -13,6 +13,11 @@ const projectSchema = new Schema(
       trim: true,
       required: true
     },
+    description: {
+      type: String,
+      trim: true,
+      default: undefined
+    },
     quote: {
       type: String,
       default: undefined
