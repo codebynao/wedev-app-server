@@ -71,6 +71,24 @@ const projectSchema = new Schema(
       type: Number,
       default: 0
     },
+    tasks: {
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Task'
+        }
+      ],
+      default: []
+    },
+    sprints: {
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Sprint'
+        }
+      ],
+      default: []
+    },
     repositories: {
       type: [
         {

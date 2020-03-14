@@ -2,6 +2,8 @@ const authController = require('../controllers/auth');
 const userController = require('../controllers/user');
 const clientController = require('../controllers/client');
 const projectController = require('../controllers/project');
+const sprintController = require('../controllers/sprint');
+const taskController = require('../controllers/task');
 
 const resolvers = {
   Query: {
@@ -13,6 +15,12 @@ const resolvers = {
       projectController.getProject(args, context),
     projects: async (root, args, context) =>
       projectController.getProjects(context),
+    sprint: async (root, args, context) =>
+      sprintController.getSprint(args, context),
+    sprints: async (root, args, context) =>
+      sprintController.getSprints(context),
+    task: async (root, args, context) => taskController.getTask(args, context),
+    tasks: async (root, args, context) => taskController.getTasks(context),
     user: async (root, args, context) => userController.getUser(args, context)
   },
   Mutation: {
@@ -33,7 +41,19 @@ const resolvers = {
     projectUpdate: async (root, args, context) =>
       projectController.updateProject(args, context),
     projectDeletion: async (root, args, context) =>
-      projectController.deleteProject(args, context)
+      projectController.deleteProject(args, context),
+    sprintCreation: async (root, args, context) =>
+      sprintController.createSprint(args, context),
+    sprintUpdate: async (root, args, context) =>
+      sprintController.updateSprint(args, context),
+    sprintDeletion: async (root, args, context) =>
+      sprintController.deleteSprint(args, context),
+    taskCreation: async (root, args, context) =>
+      taskController.createTask(args, context),
+    taskUpdate: async (root, args, context) =>
+      taskController.updateTask(args, context),
+    taskDeletion: async (root, args, context) =>
+      taskController.deleteTask(args, context)
   }
 };
 
