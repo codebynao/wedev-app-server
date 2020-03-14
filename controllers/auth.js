@@ -7,6 +7,13 @@ const { AuthenticationError } = require('apollo-server-hapi');
 const bcrypt = require('bcrypt-nodejs');
 
 class Auth {
+  /**
+   * Login a user
+   * @param {Object} args payload
+   * @param {String} args.email
+   * @param {String} args.password
+   * @returns {Object} user info with his token
+   */
   async login(args) {
     try {
       const { email, password } = args;
