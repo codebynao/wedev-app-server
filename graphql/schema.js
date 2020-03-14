@@ -16,6 +16,8 @@ const typeDefs = gql`
     projects: [String]
     clients: [String]
     isDeactivated: Boolean
+    createdAt: String
+    updatedAt: String
   }
   input AuthUserInput {
     lastName: String!
@@ -41,6 +43,8 @@ const typeDefs = gql`
     isDeactivated: Boolean
     projects: [String]
     clients: [String]
+    createdAt: String
+    updatedAt: String
   }
   input UserInput {
     _id: ID!
@@ -91,6 +95,8 @@ const typeDefs = gql`
     address: Address
     projects: [String]
     isDeleted: Boolean
+    createdAt: String
+    updatedAt: String
   }
   input ClientInput {
     _id: ID
@@ -148,6 +154,8 @@ const typeDefs = gql`
     tasks: [Task]
     sprints: [String]
     isDeleted: Boolean
+    createdAt: String
+    updatedAt: String
   }
   input ProjectInput {
     _id: ID
@@ -179,6 +187,8 @@ const typeDefs = gql`
     completionTime: String
     project: String
     sprint: String
+    createdAt: String
+    updatedAt: String
   }
   input TaskInput {
     _id: ID
@@ -201,6 +211,8 @@ const typeDefs = gql`
     endDate: String
     project: String
     tasks: [Task]
+    createdAt: String
+    updatedAt: String
   }
   input SprintInput {
     _id: ID
