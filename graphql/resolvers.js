@@ -1,6 +1,7 @@
 const authController = require('../controllers/auth');
 const userController = require('../controllers/user');
 const clientController = require('../controllers/client');
+const metricsController = require('../controllers/metrics');
 const projectController = require('../controllers/project');
 const sprintController = require('../controllers/sprint');
 const taskController = require('../controllers/task');
@@ -11,6 +12,8 @@ const resolvers = {
       clientController.getClient(args, context),
     clients: async (root, args, context) =>
       clientController.getClients(context),
+    metrics: async (root, args, context) =>
+      metricsController.getMetrics(context),
     project: async (root, args, context) =>
       projectController.getProject(args, context),
     projects: async (root, args, context) =>

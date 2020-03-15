@@ -20,7 +20,7 @@ const projectSchema = new Schema(
     },
     quote: {
       type: String,
-      default: undefined
+      default: '0'
     },
     implementationDeadline: {
       type: Number,

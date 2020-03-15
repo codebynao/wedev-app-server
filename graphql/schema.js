@@ -226,10 +226,19 @@ const typeDefs = gql`
     tasks: [String]
   }
 
+  # Metrics
+  type Metrics {
+    totalFinishedProjects: Int
+    totalWIPProjects: Int
+    totalRevenues: Float
+    averageDailyRate: Float
+  }
+
   # Query
   type Query {
     client(_id: ID!): Client
     clients: [Client]
+    metrics: Metrics
     project(_id: ID!): Project
     projects: [Project]
     sprint(_id: ID!): Sprint
