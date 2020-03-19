@@ -94,6 +94,7 @@ const typeDefs = gql`
     contact: Contact
     address: Address
     projects: [String]
+    user: String
     isDeleted: Boolean
     createdAt: String
     updatedAt: String
@@ -104,6 +105,7 @@ const typeDefs = gql`
     contact: ContactInput!
     address: AddressInput
     projects: [String]
+    user: String
     isDeleted: Boolean
   }
 

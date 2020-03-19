@@ -79,6 +79,10 @@ const clientSchema = new Schema(
       ],
       default: []
     },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
     isDeleted: {
       type: Boolean,
       default: false

@@ -23,7 +23,8 @@ const basic = {
   }).optional(),
   projects: Joi.array()
     .items(Joi.string())
-    .optional()
+    .optional(),
+  user: Joi.string().required()
 };
 
 const creationSchema = Joi.object(basic);
