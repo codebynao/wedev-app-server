@@ -97,7 +97,7 @@ const projectSchema = new Schema(
     repositories: {
       type: [
         {
-          url: {
+          githubId: {
             type: String,
             required: true
           },
@@ -105,9 +105,17 @@ const projectSchema = new Schema(
             type: String,
             required: true
           },
-          token: {
+          fullName: {
             type: String,
             required: true
+          },
+          owner: {
+            type: String,
+            required: true
+          },
+          description: {
+            type: String,
+            default: undefined
           }
         }
       ],

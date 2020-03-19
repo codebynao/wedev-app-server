@@ -48,11 +48,11 @@ const basic = {
   delay: Joi.number().default(0),
   repositories: Joi.array()
     .items({
-      url: Joi.string()
-        .uri()
-        .required(),
+      githubId: Joi.string().required(),
       name: Joi.string().required(),
-      token: Joi.string().required()
+      fullName: Joi.string().required(),
+      owner: Joi.string().required(),
+      description: Joi.string().optional()
     })
     .optional()
 };

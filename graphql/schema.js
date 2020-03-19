@@ -125,17 +125,6 @@ const typeDefs = gql`
     description: String
   }
 
-  type Repository {
-    url: String
-    name: String
-    token: String
-  }
-  input RepositoryInput {
-    url: String!
-    name: String!
-    token: String!
-  }
-
   type ProjectClient {
     _id: ID
     corporateName: String
@@ -157,7 +146,7 @@ const typeDefs = gql`
     client: ProjectClient
     user: String
     delay: String
-    repositories: [Repository]
+    repositories: [Repo]
     tasks: [Task]
     sprints: [String]
     isDeleted: Boolean
@@ -178,7 +167,7 @@ const typeDefs = gql`
     client: String
     user: String!
     delay: String
-    repositories: [RepositoryInput]
+    repositories: [RepoInput]
     tasks: [String]
     sprints: [String]
     isDeleted: Boolean
@@ -240,6 +229,22 @@ const typeDefs = gql`
     averageDailyRate: Float
   }
 
+  # Github
+  type Repo {
+    githubId: String
+    name: String
+    fullName: String
+    owner: String
+    description: String
+  }
+  input RepoInput {
+    githubId: String
+    name: String
+    fullName: String
+    owner: String
+    description: String
+  }
+
   # Query
   type Query {
     client(_id: ID!): Client
@@ -247,6 +252,7 @@ const typeDefs = gql`
     metrics: Metrics
     project(_id: ID!): Project
     projects: [Project]
+    repositories: [Repo]
     sprint(_id: ID!): Sprint
     sprints: [Sprint]
     task(_id: ID!): Task
