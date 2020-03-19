@@ -244,6 +244,10 @@ const typeDefs = gql`
     owner: String
     description: String
   }
+  input IssueInput {
+    title: String
+    body: String
+  }
 
   # Query
   type Query {
@@ -278,6 +282,7 @@ const typeDefs = gql`
     taskCreation(task: TaskInput!): Task
     taskUpdate(task: TaskInput!): Task
     taskDeletion(_id: ID!): Boolean
+    githubIssueCreation(issue: IssueInput!, projectId: String!): String
   }
 `;
 
