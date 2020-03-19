@@ -5,6 +5,7 @@ const metricsController = require('../controllers/metrics');
 const projectController = require('../controllers/project');
 const sprintController = require('../controllers/sprint');
 const taskController = require('../controllers/task');
+const repositoryController = require('../controllers/repository');
 
 const resolvers = {
   Query: {
@@ -18,6 +19,8 @@ const resolvers = {
       projectController.getProject(args, context),
     projects: async (root, args, context) =>
       projectController.getProjects(context),
+    repositories: async (root, args, context) =>
+      repositoryController.getReposList(context),
     sprint: async (root, args, context) =>
       sprintController.getSprint(args, context),
     sprints: async (root, args, context) =>
