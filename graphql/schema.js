@@ -43,6 +43,8 @@ const typeDefs = gql`
     isDeactivated: Boolean
     projects: [String]
     clients: [String]
+    githubToken: String
+    githubLogin: String
     createdAt: String
     updatedAt: String
   }
@@ -59,6 +61,8 @@ const typeDefs = gql`
     projects: [String]
     clients: [String]
     isDeactivated: Boolean
+    githubToken: String
+    githubLogin: String
   }
 
   # Client

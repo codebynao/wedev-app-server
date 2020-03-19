@@ -1,62 +1,21 @@
 'use strict';
 
-const UserModel = require('../models/User');
+// Congig
+const config = require('../config/default');
+// Dependencies
+const Joi = require('@hapi/joi');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto-js');
 const bcrypt = require('bcrypt-nodejs');
-const { ApolloError } = require('apollo-server-hapi');
-const config = require('../config/default');
+const { ApolloError, AuthenticationError } = require('apollo-server-hapi');
+// Lib
+const Github = require('../lib/github');
+// Models
+const UserModel = require('../models/User');
+// Schemas
+const { creationSchema, updateSchema } = require('../schemas/user');
 
 class User {
-  /**
-   * Check the validity of a user's properties value
-   * @param {Object} args - user properties
-   * @returns {ApolloError|null}
-   */
-  checkUserProperties(args) {
-    // Error if user email doesn't have a correct format
-    if (!config.REGEX.EMAIL.test(args.email)) {
-      return new ApolloError("Mauvais format d'adresse mail", 500, {
-        errorLabel: 'user_register_incorrect_email_format'
-      });
-    }
-
-    // Error if siret number has a wrong format
-    if (
-      args.siret &&
-      args.siret.length !== config.LENGTH_SIRET &&
-      !config.REGEX.NUMBERS_ONLY.test(args.siret)
-    ) {
-      return new ApolloError(`Mauvais format de numéro de SIRET`, 500, {
-        errorLabel: 'user_register_incorrect_siret_format'
-      });
-    }
-
-    // Error if company status not in predefined list
-    const companyStatusConfig = Object.values(config.COMPANY_STATUS);
-    if (
-      args.companyStatus &&
-      !companyStatusConfig.includes(args.companyStatus)
-    ) {
-      return new ApolloError(`Statut de société inconnu`, 500, {
-        errorLabel: 'user_register_unknown_company_status'
-      });
-    }
-
-    // Error if professional status not in predefined list
-    const professionalStatusConfig = Object.values(config.PROFESSIONAL_STATUS);
-    if (
-      args.professionalStatus &&
-      !professionalStatusConfig.includes(args.professionalStatus)
-    ) {
-      return new ApolloError(`Statut professionnel inconnu`, 500, {
-        errorLabel: 'user_register_unknown_professional_status'
-      });
-    }
-
-    return;
-  }
-
   /**
    * Create a user
    * @param {Object} args - user properties
@@ -66,8 +25,14 @@ class User {
     try {
       const userArgs = args.user;
 
+      // Check user arguments validity
+      Joi.assert(userArgs, creationSchema);
+
       // Check if user with same email already exists
-      const userFound = await UserModel.findOne({ email: userArgs.email });
+      const userFound = await UserModel.findOne(
+        { email: userArgs.email },
+        '_id'
+      ).lean();
 
       // Error if user email already exists
       if (userFound) {
@@ -76,13 +41,6 @@ class User {
           500,
           { errorLabel: 'user_register_duplicated_email' }
         );
-      }
-
-      // Check if a property value is incorrect
-      const error = this.checkUserProperties(userArgs);
-
-      if (error) {
-        throw error;
       }
 
       // Decrypt password
@@ -131,11 +89,10 @@ class User {
    * @param {String} args._id - user id
    * @returns {Object} user found
    */
-  async getUser(args) {
-    if (!args._id) {
-      throw new UserInputError('Identifiant manquant', {
-        invalidArgs: ['_id']
-      });
+  async getUser(args, context) {
+    // Check if logged in user is authorized to perform this action
+    if (!context.user || context.user._id.toString() !== args._id) {
+      throw new AuthenticationError('Action non autorisée');
     }
 
     try {
@@ -151,24 +108,30 @@ class User {
    * @param {Object} args - user properties
    * @returns {Object} updated user
    */
-  async updateUser(args) {
-    const user = args.user;
-    if (!user._id) {
-      throw new UserInputError('Identifiant manquant', {
-        invalidArgs: ['_id']
-      });
+  async updateUser(args, context) {
+    // Check user arguments validity
+    Joi.assert(args.user, updateSchema);
+
+    // Check if logged in user is authorized to perform this action
+    if (!context.user || context.user._id.toString() !== args.user._id) {
+      throw new AuthenticationError('Action non autorisée');
     }
 
-    // Check if a property value is incorrect
-    const error = this.checkUserProperties(user);
-    if (error) {
-      throw error;
+    // If new github token, get github user login
+    if (
+      args.user.githubToken &&
+      (!context.user.githubToken ||
+        context.user.githubToken !== args.user.githubToken)
+    ) {
+      const github = new Github(args.user.githubToken);
+      const info = await github.getUserInfo();
+      args.user.githubLogin = info.login;
     }
 
     try {
       return await UserModel.findByIdAndUpdate(
-        user._id,
-        { $set: user },
+        args.user._id,
+        { $set: args.user },
         { new: true }
       );
     } catch (error) {
@@ -184,10 +147,9 @@ class User {
    * @returns {Boolean} true if it is successful
    */
   async deactivateUser(args) {
-    if (!args._id) {
-      throw new UserInputError('Identifiant manquant', {
-        invalidArgs: ['_id']
-      });
+    // Check if logged in user is authorized to perform this action
+    if (!context.user || context.user._id.toString() !== args._id) {
+      throw new AuthenticationError('Action non autorisée');
     }
 
     try {

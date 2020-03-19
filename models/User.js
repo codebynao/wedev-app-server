@@ -25,7 +25,8 @@ const userSchema = new Schema(
     siret: {
       type: String,
       minLength: config.LENGTH_SIRET,
-      maxLength: config.LENGTH_SIRET
+      maxLength: config.LENGTH_SIRET,
+      default: undefined
     },
     email: {
       type: String,
@@ -69,7 +70,15 @@ const userSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: 'Project'
       }
-    ]
+    ],
+    githubToken: {
+      type: String,
+      default: undefined
+    },
+    githubLogin: {
+      type: String,
+      default: undefined
+    }
   },
   {
     timestamps: true, // Use Mongoose createdAt & updatedAt,
