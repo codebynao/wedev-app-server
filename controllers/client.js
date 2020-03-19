@@ -1,9 +1,11 @@
 'use strict';
 
 const ClientModel = require('./../models/Client');
+const ProjectModel = require('./../models/Project');
 const { creationSchema, updateSchema } = require('./../schemas/client');
 const Joi = require('@hapi/joi');
 const { AuthenticationError } = require('apollo-server-hapi');
+const auth = require('./../lib/auth');
 
 class Client {
   /**
@@ -46,7 +48,10 @@ class Client {
       Joi.assert(args.client, updateSchema);
 
       // Check if logged in user is authorized to perform this action
-      if (!context.user || hasClientPermission(context.user, args.client._id)) {
+      if (
+        !context.user ||
+        auth.hasClientPermission(context.user, args.client._id)
+      ) {
         throw new AuthenticationError('Action non autorisée');
       }
 
@@ -73,7 +78,7 @@ class Client {
   async deleteClient(args, context) {
     try {
       // Check if logged in user is authorized to perform this action
-      if (!context.user || hasClientPermission(context.user, args._id)) {
+      if (!context.user || auth.hasClientPermission(context.user, args._id)) {
         throw new AuthenticationError('Action non autorisée');
       }
 
@@ -105,7 +110,7 @@ class Client {
   async getClient(args, context) {
     try {
       // Check if logged in user is authorized to perform this action
-      if (!context.user || hasClientPermission(context.user, args._id)) {
+      if (!context.user || auth.hasClientPermission(context.user, args._id)) {
         throw new AuthenticationError('Action non autorisée');
       }
 
@@ -136,18 +141,6 @@ class Client {
       console.error('Error getClients', error);
       throw new Error(error.message || error);
     }
-  }
-
-  /**
-   * Check if user has the permission to update the client
-   * @param {Object} contextUser - user authenticated
-   * @param {String} clientId
-   * @returns {Boolean}
-   */
-  hasClientPermission(contextUser, clientId) {
-    return (
-      contextUser.clients && contextUser.clients.find(id => id === clientId)
-    );
   }
 }
 
