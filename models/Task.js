@@ -28,7 +28,7 @@ const taskSchema = new Schema(
       default: undefined
     },
     completionTime: {
-      type: String,
+      type: Number,
       default: undefined
     },
     project: {

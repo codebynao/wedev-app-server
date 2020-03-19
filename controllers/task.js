@@ -1,13 +1,19 @@
 'use strict';
 
-const TaskModel = require('./../models/Task');
-const ProjectModel = require('./../models/Project');
-const SprintModel = require('./../models/Sprint');
-const { creationSchema, updateSchema } = require('./../schemas/task');
+// Config
+const config = require('../config/default');
+// Dependencies
 const Joi = require('@hapi/joi');
-
 const { AuthenticationError } = require('apollo-server-hapi');
-const auth = require('./../lib/auth');
+const differenceInMilliseconds = require('date-fns/differenceInMilliseconds');
+// Libs
+const auth = require('../lib/auth');
+// Models
+const TaskModel = require('../models/Task');
+const ProjectModel = require('../models/Project');
+const SprintModel = require('../models/Sprint');
+// Schemas
+const { creationSchema, updateSchema } = require('../schemas/task');
 
 class Task {
   /**
@@ -92,6 +98,25 @@ class Task {
         await SprintModel.findByIdAndUpdate(oldTask.sprint, {
           $pull: { tasks: args.task._id }
         });
+      }
+
+      if (oldTask.status !== args.task.status) {
+        switch (args.task.status) {
+          case config.PROGRESS_STATUS.NOT_STARTED:
+            args.task.startDate = null;
+            break;
+          case config.PROGRESS_STATUS.WIP:
+            args.task.startDate = Date.now();
+            break;
+          case config.PROGRESS_STATUS.DONE:
+            args.task.endDate = Date.now();
+
+            // Calculate the difference in milliseconds
+            args.task.completionTime = oldTask.startDate
+              ? differenceInMilliseconds(args.task.endDate, oldTask.startDate)
+              : 0;
+            break;
+        }
       }
 
       // Update task

@@ -9,7 +9,7 @@ const basic = {
     .required(),
   startDate: Joi.string().optional(),
   endDate: Joi.string().optional(),
-  completionTime: Joi.string().optional(),
+  completionTime: Joi.number().optional(),
   project: Joi.string().required(),
   sprint: Joi.string().optional()
 };
