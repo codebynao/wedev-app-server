@@ -283,6 +283,7 @@ const typeDefs = gql`
     taskUpdate(task: TaskInput!): Task
     taskDeletion(_id: ID!): Boolean
     githubIssueCreation(issue: IssueInput!, projectId: String!): String
+    githubProjectCreation(repoFullName: String!): Project
   }
 `;
 
