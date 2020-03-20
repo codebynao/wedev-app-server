@@ -89,7 +89,7 @@ class Project {
    * @param {Object} context.user - logged in user info
    * @returns {Boolean}
    */
-  async deleteProject(args) {
+  async deleteProject(args, context) {
     try {
       // Check if logged in user is authorized to perform this action
       if (!context.user || auth.hasProjectPermission(context.user, args._id)) {
