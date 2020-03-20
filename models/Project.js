@@ -59,9 +59,9 @@ const projectSchema = new Schema(
       ],
       default: []
     },
-    dailyRate: {
+    hourlyRate: {
       type: String,
-      default: undefined
+      required: true
     },
     client: {
       type: Schema.Types.ObjectId,
