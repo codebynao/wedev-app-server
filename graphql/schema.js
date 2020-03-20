@@ -228,7 +228,7 @@ const typeDefs = gql`
     totalFinishedProjects: Int
     totalWIPProjects: Int
     totalRevenues: Float
-    averageDailyRate: Float
+    averageHourlyRate: Float
   }
 
   # Github
