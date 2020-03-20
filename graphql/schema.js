@@ -142,7 +142,7 @@ const typeDefs = gql`
     endDate: String
     status: String
     stacks: [Stack]
-    dailyRate: String
+    hourlyRate: String
     client: ProjectClient
     user: String
     delay: String
@@ -163,7 +163,7 @@ const typeDefs = gql`
     endDate: String
     status: String!
     stacks: [StackInput]
-    dailyRate: String
+    hourlyRate: String
     client: String
     user: String!
     delay: String
