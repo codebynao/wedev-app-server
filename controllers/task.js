@@ -5,7 +5,6 @@ const config = require('../config/default');
 // Dependencies
 const Joi = require('@hapi/joi');
 const { AuthenticationError } = require('apollo-server-hapi');
-const differenceInMilliseconds = require('date-fns/differenceInMilliseconds');
 // Libs
 const auth = require('../lib/auth');
 // Models
@@ -106,15 +105,13 @@ class Task {
             args.task.startDate = null;
             break;
           case config.PROGRESS_STATUS.WIP:
-            args.task.startDate = Date.now();
+            // If task status changes from done to in progress, don't reset the start date
+            if (oldTask.status === config.PROGRESS_STATUS.NOT_STARTED) {
+              args.task.startDate = Date.now();
+            }
             break;
           case config.PROGRESS_STATUS.DONE:
             args.task.endDate = Date.now();
-
-            // Calculate the difference in milliseconds
-            args.task.completionTime = oldTask.startDate
-              ? differenceInMilliseconds(args.task.endDate, oldTask.startDate)
-              : 0;
             break;
         }
       }
