@@ -56,7 +56,7 @@ class Project {
       // Check if logged in user is authorized to perform this action
       if (
         !context.user ||
-        auth.hasProjectPermission(context.user, args.project._id)
+        !auth.hasProjectPermission(context.user, args.project._id)
       ) {
         throw new AuthenticationError('Action non autorisée');
       }
@@ -118,12 +118,41 @@ class Project {
   async getProject(args, context) {
     try {
       // Check if logged in user is authorized to perform this action
-      if (!context.user || auth.hasProjectPermission(context.user, args._id)) {
+      if (!context.user || !auth.hasProjectPermission(context.user, args._id)) {
         throw new AuthenticationError('Action non autorisée');
       }
 
       // Find project
-      return await ProjectModel.findById(args._id);
+      const project = await ProjectModel.findById(args._id)
+        .populate('tasks')
+        .lean();
+
+      // Calculate total of hours of work
+      let totalHours = 0;
+      const tasks = project.tasks;
+
+      for (const task of tasks) {
+        if (!task.completionTime) {
+          continue;
+        }
+        totalHours += task.completionTime;
+      }
+
+      // Charge at least one hour of work
+      if (!totalHours) {
+        totalHours = 1;
+      }
+
+      // Calculate the price depending on hourly rate and number of hours of work
+      const price = parseFloat(project.hourlyRate) * totalHours;
+
+      // Calculate the difference between quote and real price
+      const diffQuotePrice = project.quote - price;
+
+      // Add these fields to project
+      project.price = price;
+      project.diffQuotePrice = diffQuotePrice;
+      return project;
     } catch (error) {
       console.error('Error getProject', error);
       throw new Error(error.message || error);

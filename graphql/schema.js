@@ -152,6 +152,8 @@ const typeDefs = gql`
     isDeleted: Boolean
     createdAt: String
     updatedAt: String
+    price: Float
+    diffQuotePrice: Float
   }
   input ProjectInput {
     _id: ID
