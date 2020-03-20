@@ -142,7 +142,7 @@ const typeDefs = gql`
     endDate: String
     status: String
     stacks: [Stack]
-    dailyRate: String
+    hourlyRate: String
     client: ProjectClient
     user: String
     delay: String
@@ -152,6 +152,8 @@ const typeDefs = gql`
     isDeleted: Boolean
     createdAt: String
     updatedAt: String
+    price: Float
+    diffQuotePrice: Float
   }
   input ProjectInput {
     _id: ID
@@ -163,7 +165,7 @@ const typeDefs = gql`
     endDate: String
     status: String!
     stacks: [StackInput]
-    dailyRate: String
+    hourlyRate: String
     client: String
     user: String!
     delay: String
@@ -226,7 +228,7 @@ const typeDefs = gql`
     totalFinishedProjects: Int
     totalWIPProjects: Int
     totalRevenues: Float
-    averageDailyRate: Float
+    averageHourlyRate: Float
   }
 
   # Github

@@ -27,9 +27,12 @@ const taskSchema = new Schema(
       type: Date,
       default: undefined
     },
+    // In hours
     completionTime: {
       type: Number,
-      default: undefined
+      required: () => {
+        this.status === config.PROGRESS_STATUS.DONE;
+      }
     },
     project: {
       type: Schema.Types.ObjectId,

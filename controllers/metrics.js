@@ -31,13 +31,13 @@ class Metrics {
   }
 
   /**
-   * Get average daily rate
+   * Get average hourly rate
    * @param {Array} projects
    * @returns {Number}
    */
-  getAverageDailyRate(projects) {
+  getAverageHourlyRate(projects) {
     return projects.reduce((previousValue, currentValue) => {
-      const float = currentValue.dailyRate || 0;
+      const float = currentValue.hourlyRate || 0;
       return previousValue + parseFloat(float);
     }, 0);
   }
@@ -58,7 +58,7 @@ class Metrics {
       // Get list of projects of this user
       const projects = await ProjectModel.find(
         { user: context.user._id },
-        'dailyRate quote status'
+        'hourlyRate quote status'
       ).lean();
 
       // Get total number of finished projects
@@ -76,13 +76,13 @@ class Metrics {
       // Get total revenues
       const totalRevenues = this.getTotalRevenues(projects);
 
-      // Get average daily rate
-      const averageDailyRate = this.getAverageDailyRate(projects);
+      // Get average hourly rate
+      const averageHourlyRate = this.getAverageHourlyRate(projects);
       return {
         totalFinishedProjects,
         totalWIPProjects,
         totalRevenues,
-        averageDailyRate
+        averageHourlyRate
       };
     } catch (error) {
       console.error('Error getMetrics', error);
