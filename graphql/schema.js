@@ -97,7 +97,7 @@ const typeDefs = gql`
     corporateName: String
     contact: Contact
     address: Address
-    projects: [String]
+    projects: [Project]
     user: String
     isDeleted: Boolean
     createdAt: String

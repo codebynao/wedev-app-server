@@ -1,5 +1,6 @@
 'use strict';
 
+const ClientModel = require('./../models/Client');
 const ProjectModel = require('./../models/Project');
 const { creationSchema, updateSchema } = require('./../schemas/project');
 const Joi = require('@hapi/joi');
@@ -27,6 +28,11 @@ class Project {
 
       // Create project
       const project = await ProjectModel.create(args.project);
+
+      // Add project to client
+      await ClientModel.findByIdAndUpdate(project.client, {
+        $addToSet: { projects: project._id }
+      });
 
       // Return project populated
       return await project

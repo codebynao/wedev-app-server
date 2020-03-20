@@ -115,7 +115,10 @@ class Client {
       }
 
       // Find client
-      return await ClientModel.findById(args._id);
+      return await ClientModel.findById(args._id).populate({
+        path: 'projects',
+        ref: 'Project'
+      });
     } catch (error) {
       console.error('Error getClient', error);
       throw new Error(error.message || error);
