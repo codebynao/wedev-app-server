@@ -136,7 +136,10 @@ class Client {
       }
 
       // Find clients of this user
-      return await ClientModel.find({ user: context.user._id });
+      return await ClientModel.find({
+        user: context.user._id,
+        isDeleted: { $ne: true }
+      });
     } catch (error) {
       console.error('Error getClients', error);
       throw new Error(error.message || error);

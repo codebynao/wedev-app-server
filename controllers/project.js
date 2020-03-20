@@ -144,7 +144,10 @@ class Project {
       }
 
       // Find the projects of the user
-      return await ProjectModel.find({ user: context.user._id });
+      return await ProjectModel.find({
+        user: context.user._id,
+        isDeleted: { $ne: true }
+      });
     } catch (error) {
       console.error('Error getProjects', error);
       throw new Error(error.message || error);
