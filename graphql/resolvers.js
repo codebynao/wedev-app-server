@@ -61,7 +61,9 @@ const resolvers = {
     taskDeletion: async (root, args, context) =>
       taskController.deleteTask(args, context),
     githubIssueCreation: async (root, args, context) =>
-      repositoryController.createIssue(args, context)
+      repositoryController.createIssue(args, context),
+    githubProjectCreation: async (root, args, context) =>
+      repositoryController.createProjectFromRepo(args, context)
   }
 };
 
