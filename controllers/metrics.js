@@ -36,10 +36,11 @@ class Metrics {
    * @returns {Number}
    */
   getAverageHourlyRate(projects) {
-    return projects.reduce((previousValue, currentValue) => {
+    const total = projects.reduce((previousValue, currentValue) => {
       const float = currentValue.hourlyRate || 0;
       return previousValue + parseFloat(float);
     }, 0);
+    return projects.length ? total / projects.length : 0;
   }
 
   /**
