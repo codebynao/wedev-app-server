@@ -158,7 +158,19 @@ class Sprint {
       }
 
       // Find sprint
-      return await SprintModel.findById(args._id).populate('tasks');
+      return await SprintModel.findById(args._id).populate([
+        {
+          path: 'project',
+          select: 'title description status client',
+          populate: {
+            path: 'client',
+            select: 'corporateName'
+          }
+        },
+        {
+          path: 'tasks'
+        }
+      ]);
     } catch (error) {
       console.error('Error getSprint', error);
       throw new Error(error.message || error);
@@ -181,7 +193,19 @@ class Sprint {
       // Find sprints
       return await SprintModel.find({
         project: { $in: context.user.projects }
-      }).populate('tasks');
+      }).populate([
+        {
+          path: 'project',
+          select: 'title description status client',
+          populate: {
+            path: 'client',
+            select: 'corporateName'
+          }
+        },
+        {
+          path: 'tasks'
+        }
+      ]);
     } catch (error) {
       console.error('Error getSprints', error);
       throw new Error(error.message || error);

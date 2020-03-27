@@ -6,10 +6,9 @@ const basic = {
   status: Joi.string()
     .valid(...Object.values(config.PROGRESS_STATUS))
     .required(),
-  startDate: Joi.string().optional(),
-  endDate: Joi.string().optional(),
+  startDate: Joi.string().required(),
+  endDate: Joi.string().required(),
   project: Joi.string().required(),
-  sprint: Joi.string().optional(),
   tasks: Joi.array()
     .items(Joi.string())
     .optional()

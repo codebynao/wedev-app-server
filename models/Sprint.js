@@ -20,7 +20,7 @@ const sprintSchema = new Schema(
     },
     endDate: {
       type: Date,
-      default: undefined
+      required: true
     },
     project: {
       type: Schema.Types.ObjectId,

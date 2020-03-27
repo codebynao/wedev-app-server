@@ -202,13 +202,24 @@ const typeDefs = gql`
   }
 
   # Sprint
+  type SprintProjectClient {
+    _id: ID
+    corporateName: String
+  }
+  type SprintProject {
+    _id: ID
+    title: String
+    description: String
+    status: String
+    client: SprintProjectClient
+  }
   type Sprint {
     _id: ID
     title: String
     status: String
     startDate: String
     endDate: String
-    project: String
+    project: SprintProject
     tasks: [Task]
     createdAt: String
     updatedAt: String
@@ -217,8 +228,8 @@ const typeDefs = gql`
     _id: ID
     title: String!
     status: String!
-    startDate: String
-    endDate: String
+    startDate: String!
+    endDate: String!
     project: String!
     tasks: [String]
   }
