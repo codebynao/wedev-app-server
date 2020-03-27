@@ -142,6 +142,9 @@ class Client {
       return await ClientModel.find({
         user: context.user._id,
         isDeleted: { $ne: true }
+      }).populate({
+        path: 'projects',
+        ref: 'Project'
       });
     } catch (error) {
       console.error('Error getClients', error);
