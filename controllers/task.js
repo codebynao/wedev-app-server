@@ -204,19 +204,38 @@ class Task {
 
   /**
    * Find all the tasks of a user from all projects
+   * @param {Object} args - request payload
+   * @param {Object} args.projectId
+   * @param {Object} args.sprintId
+   * @param {Object} args.excludeWithSprint
    * @param {Object} context - request context
    * @param {Object} context.user - logged in user info
    * @returns {Object} - Sprints found
    */
-  async getTasks(context) {
+  async getTasks(args, context) {
     try {
       // Check if logged in user is authorized to perform this action
-      if (!context.user) {
+      if (
+        !context.user ||
+        (args.projectId &&
+          !auth.hasProjectPermission(context.user, args.projectId))
+      ) {
         throw new AuthenticationError('Action non autorisée');
       }
 
+      const sprintQuery = args.excludeWithSprint
+        ? { $or: [{ sprint: { $exists: false } }, { sprint: { $eq: null } }] }
+        : args.sprintId
+        ? { sprint: args.sprintId }
+        : null;
+
+      const query = {
+        project: args.projectId || { $in: context.user.projects },
+        ...sprintQuery
+      };
+
       // Find tasks
-      return await TaskModel.find({ project: { $in: context.user.projects } });
+      return await TaskModel.find(query);
     } catch (error) {
       console.error('Error getTasks', error);
       throw new Error(error.message || error);

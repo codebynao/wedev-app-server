@@ -26,7 +26,8 @@ const resolvers = {
     sprints: async (root, args, context) =>
       sprintController.getSprints(context),
     task: async (root, args, context) => taskController.getTask(args, context),
-    tasks: async (root, args, context) => taskController.getTasks(context),
+    tasks: async (root, args, context) =>
+      taskController.getTasks(args, context),
     user: async (root, args, context) => userController.getUser(args, context)
   },
   Mutation: {

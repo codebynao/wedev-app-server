@@ -184,8 +184,8 @@ const typeDefs = gql`
     startDate: String
     endDate: String
     completionTime: String
-    project: String
-    sprint: String
+    project: Project
+    sprint: Sprint
     createdAt: String
     updatedAt: String
   }
@@ -273,7 +273,7 @@ const typeDefs = gql`
     sprint(_id: ID!): Sprint
     sprints: [Sprint]
     task(_id: ID!): Task
-    tasks: [Task]
+    tasks(projectId: ID, sprintId: ID, excludeWithSprint: Boolean): [Task]
     user(_id: ID!): User
   }
 

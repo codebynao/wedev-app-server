@@ -35,6 +35,14 @@ class Sprint {
       // Create sprint
       const sprint = await SprintModel.create(args.sprint);
 
+      // If sprint has tasks, let's add sprint id to tasks
+      if (args.sprint.tasks && args.sprint.tasks.length) {
+        await TaskModel.updateMany(
+          { _id: { $in: args.sprint.tasks } },
+          { $set: { sprint: sprint._id } }
+        );
+      }
+
       // Add sprint to project's list of sprints
       await ProjectModel.findByIdAndUpdate(sprint.project, {
         $addToSet: { sprints: sprint._id }
