@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi');
 const config = require('./../config/default');
-
+const TaskSchema = require('./task');
 const basic = {
   title: Joi.string().required(),
   status: Joi.string()
@@ -21,7 +21,14 @@ const updateSchema = Joi.object({
   ...basic
 });
 
+const sprintTaskSchema = Joi.object({
+  _id: Joi.string().required(),
+  project: Joi.string().required(),
+  task: TaskSchema.updateSchema
+});
+
 module.exports = {
   creationSchema,
-  updateSchema
+  updateSchema,
+  sprintTaskSchema
 };

@@ -4,7 +4,11 @@ const ProjectModel = require('./../models/Project');
 const SprintModel = require('./../models/Sprint');
 const TaskModel = require('./../models/Task');
 
-const { creationSchema, updateSchema } = require('./../schemas/sprint');
+const {
+  creationSchema,
+  updateSchema,
+  sprintTaskSchema
+} = require('./../schemas/sprint');
 const Joi = require('@hapi/joi');
 
 const { AuthenticationError } = require('apollo-server-hapi');
@@ -76,32 +80,72 @@ class Sprint {
         throw new AuthenticationError('Action non autorisée');
       }
 
-      // Get old sprint before updating it
-      const oldSprint = await SprintModel.findById(args.sprint._id).lean();
-
-      // Check if the list of tasks has been updated
-      for (const task of oldSprint.tasks) {
-        const ids = args.sprint.tasks.map(task => task.toString());
-        if (ids.includes(task.toString())) {
-          continue;
-        }
-
-        // If task has been removed from the sprint, remove sprint id from the task
-        await TaskModel.findByIdAndUpdate(task, {
-          $set: { sprint: undefined }
-        });
-      }
-
       // Return updated sprint
       return await SprintModel.findByIdAndUpdate(
         args.sprint._id,
         { $set: args.sprint },
         { new: true }
-      );
+      ).populate([
+        {
+          path: 'project',
+          select: 'title description status client',
+          populate: {
+            path: 'client',
+            select: 'corporateName'
+          }
+        },
+        {
+          path: 'tasks'
+        }
+      ]);
     } catch (error) {
       console.error('Error updateSprint', error);
       throw new Error(error.message || error);
     }
+  }
+
+  async updateSprintTask(args, context) {
+    // Check sprint arguments validity
+    Joi.assert(args.sprint, sprintTasksSchema);
+
+    // Check if logged in user is authorized to perform this action
+    if (
+      !context.user ||
+      !auth.hasProjectPermission(context.user, args.sprint.project)
+    ) {
+      throw new AuthenticationError('Action non autorisée');
+    }
+
+    try {
+      return TaskModel.findByIdAndUpdate(
+        args.sprint.task._id,
+        {
+          $set: args.sprint.task
+        },
+        { new: true }
+      );
+    } catch (error) {
+      console.error('Error updateSprintTask', error);
+      throw new Error(error.message || error);
+    }
+
+    // Get old sprint before updating it
+    // const oldSprint = await SprintModel.findById(args.sprint._id).lean();
+
+    // if (oldSprint.tasks.includes(args.sprint.task._id)) {
+
+    // }
+    // // Check if the list of tasks has been updated
+    // for (const task of oldSprint.tasks) {
+    //   if (ids.includes(task.toString())) {
+    //     continue;
+    //   }
+
+    //   // If task has been removed from the sprint, remove sprint id from the task
+    //   await TaskModel.findByIdAndUpdate(task, {
+    //     $set: { sprint: undefined }
+    // });
+    // }
   }
 
   /**

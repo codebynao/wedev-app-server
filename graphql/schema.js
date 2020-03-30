@@ -200,6 +200,23 @@ const typeDefs = gql`
     project: String!
     sprint: String
   }
+  input TaskStatusInput {
+    _id: ID!
+    project: String!
+    status: String!
+  }
+
+  input TaskSprintDeletionInput {
+    _id: ID!
+    sprint: String!
+    project: String!
+  }
+
+  input TasksSprintAdditionInput {
+    _ids: [ID]!
+    sprint: ID!
+    project: ID!
+  }
 
   # Sprint
   type SprintProjectClient {
@@ -294,7 +311,10 @@ const typeDefs = gql`
     sprintDeletion(_id: ID!): Boolean
     taskCreation(task: TaskInput!): Task
     taskUpdate(task: TaskInput!): Task
+    taskStatusUpdate(task: TaskStatusInput!): Task
+    taskSprintDeletion(task: TaskSprintDeletionInput): Boolean
     taskDeletion(_id: ID!): Boolean
+    tasksSprintAddition(tasks: TasksSprintAdditionInput!): Boolean
     githubIssueCreation(issue: IssueInput!, projectId: String!): String
     githubProjectCreation(repoFullName: String!): Project
   }

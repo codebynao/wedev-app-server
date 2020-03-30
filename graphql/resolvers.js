@@ -59,8 +59,14 @@ const resolvers = {
       taskController.createTask(args, context),
     taskUpdate: async (root, args, context) =>
       taskController.updateTask(args, context),
+    taskStatusUpdate: async (root, args, context) =>
+      taskController.updateTaskStatus(args, context),
+    taskSprintDeletion: async (root, args, context) =>
+      taskController.removeTaskFromSprint(args, context),
     taskDeletion: async (root, args, context) =>
       taskController.deleteTask(args, context),
+    tasksSprintAddition: async (root, args, context) =>
+      taskController.addTasksToSprint(args, context),
     githubIssueCreation: async (root, args, context) =>
       repositoryController.createIssue(args, context),
     githubProjectCreation: async (root, args, context) =>
