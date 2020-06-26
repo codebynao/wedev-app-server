@@ -1,4 +1,4 @@
-# webdev app client
+# webdev app server
 
 ## Git conventions
 
